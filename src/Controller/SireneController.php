@@ -43,6 +43,12 @@ class SireneController extends AbstractController
      */
     public function GetEntrepriseFromCsv(int $id): Response
     {
+        if(strlen($id) < 9 || !is_numeric($id)){
+            return $this->json("This sirene number $id is not valid.", 400, [
+                "Content-type" => "application/json"
+            ]);
+        }
+
         $csv = Reader::createFromPath('../public/sirene-infos.csv', 'r');
         // Selects the record to be used as the CSV header.
         $csv->setHeaderOffset(0);
@@ -80,6 +86,12 @@ class SireneController extends AbstractController
      */
     public function GetEntrepriseFromSireneApi(int $id): Response
     {
+        if(strlen($id) < 9 || !is_numeric($id)){
+            return $this->json("This sirene number $id is not valid.", 400, [
+                "Content-type" => "application/json"
+            ]);
+        }
+        
         try{
             $response = $this->client->request(
                 'GET',
